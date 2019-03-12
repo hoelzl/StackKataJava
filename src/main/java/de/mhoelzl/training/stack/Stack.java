@@ -1,39 +1,46 @@
 package de.mhoelzl.training.stack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Stack {
-    private List<Integer> values = new ArrayList<>();
+    private int[] values = new int[1];
+    private int currentIndex = -1;
     private int defaultValue;
     private boolean isDefaultEnabled;
 
     public void push(int value) {
-        values.add(value);
+        if (currentIndex >= values.length - 1) {
+            int newLength = values.length == 0 ? 1 : values.length * 2;
+            int[] newValues = Arrays.copyOf(values, newLength);
+            values = newValues;
+        }
+        currentIndex++;
+        values[currentIndex] = value;
     }
 
     public int top() {
-        return values.get(values.size() - 1);
+        return values[currentIndex];
     }
 
     public boolean isEmpty() {
-        return values.isEmpty();
+        return currentIndex == -1;
     }
 
     public int pop() {
-        if (isDefaultEnabled && values.size() == 0) {
+        if (isDefaultEnabled && currentIndex == -1) {
             return defaultValue;
         }
-        return values.remove(values.size() - 1);
+        return values[currentIndex--];
     }
 
     public int size() {
-        return values.size();
+        return currentIndex + 1;
     }
 
     public int count(int element) {
         int result = 0;
-        for (int elt : values) {
+        for (int i = 0; i <= currentIndex; i++) {
+            int elt = values[i];
             if (elt == element) {
                 result++;
             }
@@ -42,7 +49,7 @@ public class Stack {
     }
 
     public int popDefault(int defaultValue) {
-        if (values.isEmpty()) {
+        if (currentIndex == -1) {
             return defaultValue;
         }
         return pop();
@@ -55,5 +62,13 @@ public class Stack {
 
     public void clearDefault() {
         isDefaultEnabled = false;
+    }
+
+    public int getCapacity() {
+        return values.length;
+    }
+
+    public void setCapacity(int newCapacity) {
+        values = Arrays.copyOf(values, Math.max(currentIndex + 1, newCapacity));
     }
 }

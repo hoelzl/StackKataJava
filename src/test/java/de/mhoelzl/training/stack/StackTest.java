@@ -146,4 +146,40 @@ public class StackTest {
         stack.clearDefault();
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> stack.pop());
     }
+
+    @Test
+    void setCapacity_setsCapacityWhenArgumentIsLarge() {
+        stack.push(10);
+        stack.push(20);
+
+        stack.setCapacity(64);
+
+        assertEquals(64, stack.getCapacity());
+    }
+
+    @Test
+    void setCapacity_trimsCapacityWhenArgumentIsSmall() {
+        for (int i = 0; i < 100; i++) {
+            stack.push(i);
+        }
+        stack.setCapacity(2);
+
+        assertEquals(100, stack.getCapacity());
+    }
+
+    @Test
+    void setCapacity_setsCapacityToZero_WhenArgumentIsZeroAndStackIsEmpty() {
+        stack.setCapacity(0);
+        assertEquals(0, stack.getCapacity());
+    }
+
+    @Test
+    void push_canPushOnStackWithCapacityZero() {
+        stack.setCapacity(0);
+        stack.push(1);
+        stack.push(2);
+
+        assertTrue(stack.getCapacity() >= 2);
+        assertEquals(2, stack.top());
+    }
 }
