@@ -1,0 +1,11 @@
+test:
+  script:
+    - ./gradlew test
+
+dist:
+  script:
+    - ./gradlew dist
+  artifacts:
+    paths:
+      - build/libs/
+
