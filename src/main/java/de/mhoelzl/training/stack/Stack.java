@@ -11,8 +11,7 @@ public class Stack {
     public void push(int value) {
         if (currentIndex >= values.length - 1) {
             int newLength = values.length == 0 ? 1 : values.length * 2;
-            int[] newValues = Arrays.copyOf(values, newLength);
-            values = newValues;
+            values = Arrays.copyOf(values, newLength);
         }
         currentIndex++;
         values[currentIndex] = value;
